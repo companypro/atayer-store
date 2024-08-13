@@ -2,7 +2,7 @@ import 'package:sixam_mart_store/data/model/response/language_model.dart';
 import 'package:sixam_mart_store/util/images.dart';
 
 class AppConstants {
-  static const String appName = 'Wafarly Store';
+  static const String appName = 'Atayer Store';
   static const double appVersion = 2.5;
 
   static const String baseUrl = 'https://lest.lisre.online';
