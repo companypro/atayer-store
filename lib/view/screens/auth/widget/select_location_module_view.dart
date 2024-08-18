@@ -33,11 +33,17 @@ class _SelectLocationAndModuleViewState extends State<SelectLocationAndModuleVie
 
   @override
   void initState() {
+
     super.initState();
+
     if(Get.find<AuthController>().zoneList != null) {
       Get.find<AuthController>().getZoneList();
+      Get.find<AuthController>().getMyCurrentLocation();
+
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -141,8 +147,9 @@ class _SelectLocationAndModuleViewState extends State<SelectLocationAndModuleVie
           GoogleMap(
             initialCameraPosition: CameraPosition(
               target: LatLng(
-                double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
-                double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
+                authController.position!.latitude,
+                authController.position!.longitude,
+                // double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
               ), zoom: 16,
             ),
             minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
@@ -162,8 +169,10 @@ class _SelectLocationAndModuleViewState extends State<SelectLocationAndModuleVie
             onCameraMove: ((position) => _cameraPosition = position),
             onMapCreated: (GoogleMapController controller) {
               authController.setLocation(LatLng(
-                double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
-                double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
+                // double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
+                // double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
+                authController.position!.latitude ,
+                authController.position!.longitude,
               ));
               if(widget.fromView) {
                 _mapController = controller;

@@ -101,7 +101,46 @@ class AuthController extends GetxController implements GetxService {
   bool get showPassView => _showPassView;
   int get paymentIndex => _paymentIndex;
   String? get digitalPaymentName => _digitalPaymentName;
+  Position? position;
 
+
+  Future<Position> getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if(permission == LocationPermission.denied){
+        return Future.error('Location permissions are denied');
+      }
+
+    }
+    if(permission == LocationPermission.whileInUse){
+      if (!isServiceEnabled) {
+        await Geolocator.requestPermission();
+      }
+    }
+
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+  }
+
+
+  Future<void> getMyCurrentLocation() async {
+
+
+    position = await getCurrentLocation();
+    update();
+
+    print('position ${position!.longitude}');
+    print('position ${position!.latitude}');
+  }
+
+  @override
+  void onInit() {
+    getMyCurrentLocation();
+    super.onInit();
+  }
   void setPaymentIndex(int index){
     _paymentIndex = index;
     update();
