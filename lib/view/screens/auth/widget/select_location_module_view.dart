@@ -30,13 +30,40 @@ class _SelectLocationAndModuleViewState extends State<SelectLocationAndModuleVie
   final Set<Polygon> _polygons = HashSet<Polygon>();
   GoogleMapController? _mapController;
   GoogleMapController? _screenMapController;
-
+  Position? position;
   @override
   void initState() {
     super.initState();
     if(Get.find<AuthController>().zoneList != null) {
       Get.find<AuthController>().getZoneList();
+      getMyCurrentLocation();
     }
+  }
+
+
+  Future<Position> getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if(permission == LocationPermission.denied){
+        return Future.error('Location permissions are denied');
+      }
+
+    }
+    if(permission == LocationPermission.whileInUse){
+      if (!isServiceEnabled) {
+        await Geolocator.requestPermission();
+      }
+    }
+
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+  }
+  Future<void> getMyCurrentLocation() async {
+    position = await getCurrentLocation()
+        .whenComplete(() => setState(() {})) ;
   }
 
   @override
@@ -141,8 +168,10 @@ class _SelectLocationAndModuleViewState extends State<SelectLocationAndModuleVie
           GoogleMap(
             initialCameraPosition: CameraPosition(
               target: LatLng(
-                double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
-                double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
+                // double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
+                // double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
+                position!.latitude,
+                position!.longitude,
               ), zoom: 16,
             ),
             minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
@@ -162,8 +191,8 @@ class _SelectLocationAndModuleViewState extends State<SelectLocationAndModuleVie
             onCameraMove: ((position) => _cameraPosition = position),
             onMapCreated: (GoogleMapController controller) {
               authController.setLocation(LatLng(
-                double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
-                double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
+                position!.latitude,
+                position!.longitude,
               ));
               if(widget.fromView) {
                 _mapController = controller;
@@ -178,9 +207,9 @@ class _SelectLocationAndModuleViewState extends State<SelectLocationAndModuleVie
             child: InkWell(
               onTap: () async {
                 var p = await Get.dialog(LocationSearchDialog(mapController: widget.fromView ? _mapController : _screenMapController));
-                Position? position = p;
+                // Position? position = p;
                 if(position != null) {
-                  _cameraPosition = CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 16);
+                  _cameraPosition = CameraPosition(target: LatLng(position!.latitude, position!.longitude), zoom: 16);
                   if(!widget.fromView) {
                     widget.mapController!.moveCamera(CameraUpdate.newCameraPosition(_cameraPosition));
                     authController.setLocation(_cameraPosition.target);
