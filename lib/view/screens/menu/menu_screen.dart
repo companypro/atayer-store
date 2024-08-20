@@ -17,12 +17,12 @@ class MenuScreen extends StatelessWidget {
 
     menuList.add(MenuModel(icon: '', title: 'profile'.tr, route: RouteHelper.getProfileRoute()));
 
-    // if(Get.find<AuthController>().modulePermission!.item!) {
-    //   menuList.add(MenuModel(
-    //     icon: Images.addFood, title: 'add_item'.tr, route: RouteHelper.getItemRoute(null),
-    //     isBlocked: !Get.find<AuthController>().profileModel!.stores![0].itemSection!,
-    //   ));
-    // }
+    if(Get.find<AuthController>().modulePermission!.item!) {
+      menuList.add(MenuModel(
+        icon: Images.addFood, title: 'add_item'.tr, route: RouteHelper.getItemRoute(null),
+        isBlocked: !Get.find<AuthController>().profileModel!.stores![0].itemSection!,
+      ));
+    }
     if(Get.find<AuthController>().modulePermission!.item!) {
       menuList.add(MenuModel(
         icon: Images.pendingItemIcon, title: 'pending_item'.tr, route: RouteHelper.getPendingItemRoute(),
@@ -34,12 +34,12 @@ class MenuScreen extends StatelessWidget {
     // if(Get.find<AuthController>().modulePermission!.bankInfo!) {
     //   menuList.add(MenuModel(icon: Images.creditCard, title: 'bank_info'.tr, route: RouteHelper.getBankInfoRoute()));
     // }
-    // if(Get.find<AuthController>().modulePermission!.campaign!) {
-    //   menuList.add(MenuModel(icon: Images.bannerIcon, title: 'banner'.tr, route: RouteHelper.getBannerListRoute()));
-    // }
-    // if(Get.find<AuthController>().modulePermission!.campaign!) {
-    //   menuList.add(MenuModel(icon: Images.campaign, title: 'campaign'.tr, route: RouteHelper.getCampaignRoute()));
-    // }
+    if(Get.find<AuthController>().modulePermission!.campaign!) {
+      menuList.add(MenuModel(icon: Images.bannerIcon, title: 'banner'.tr, route: RouteHelper.getBannerListRoute()));
+    }
+    if(Get.find<AuthController>().modulePermission!.campaign!) {
+      menuList.add(MenuModel(icon: Images.campaign, title: 'campaign'.tr, route: RouteHelper.getCampaignRoute()));
+    }
     if(Get.find<AuthController>().profileModel!.stores![0].selfDeliverySystem == 1 && Get.find<AuthController>().getUserType() == 'owner') {
       menuList.add(MenuModel(icon: Images.deliveryMan, title: 'delivery_man'.tr, route: RouteHelper.getDeliveryManRoute()));
     }
@@ -50,7 +50,7 @@ class MenuScreen extends StatelessWidget {
       menuList.add(MenuModel(icon: Images.chat, title: 'conversation'.tr, route: RouteHelper.getConversationListRoute()));
     }
     menuList.add(MenuModel(icon: Images.language, title: 'language'.tr, route: RouteHelper.getLanguageRoute('menu')));
-    // menuList.add(MenuModel(icon: Images.coupon, title: 'coupon'.tr, route: RouteHelper.getCouponRoute()));
+    menuList.add(MenuModel(icon: Images.coupon, title: 'coupon'.tr, route: RouteHelper.getCouponRoute()));
     menuList.add(MenuModel(icon: Images.expense, title: 'expense_report'.tr, route: RouteHelper.getExpenseRoute()));
 
     if(Get.find<SplashController>().configModel!.disbursementType == 'automated') {

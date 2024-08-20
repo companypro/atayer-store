@@ -38,8 +38,9 @@ class _NewRequestDialogState extends State<NewRequestDialog> {
   void _startAlarm() async {
     AudioPlayer audioPlayer = AudioPlayer();
     await audioPlayer.play(AssetSource('notification.mp3'));
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      audioPlayer.play(AssetSource('notification.mp3'));
+
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) async {
+      await audioPlayer.play(AssetSource('notification.mp3'));
     });
   }
 

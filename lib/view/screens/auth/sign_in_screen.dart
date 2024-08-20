@@ -51,7 +51,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                   return Column(children: [
 
-                    // Image.asset(Images.logo, width: 200),
+                    Image.asset(Images.logo, width: 200),
                     // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                     // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE))),
                     const SizedBox(height: Dimensions.paddingSizeExtraLarge),
@@ -149,7 +149,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       authController.vendorTypeIndex == 1 ? const SizedBox() : TextButton(
                         onPressed: () => Get.toNamed(RouteHelper.getForgotPassRoute()),
-                        child: Text('forgot_password'.tr),
+                        child: Text('${'forgot_password'.tr}?'),
                       ),
                     ]),
                     const SizedBox(height: Dimensions.paddingSizeExtraLarge),

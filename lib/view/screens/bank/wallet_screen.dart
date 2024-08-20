@@ -206,152 +206,152 @@ class _WalletScreenState extends State<WalletScreen> {
                       ),
                       const SizedBox(height: Dimensions.paddingSizeLarge),
 
-                      // Row(children: [
-                      //   Expanded(child: WalletWidget(title: 'cash_in_hand'.tr, value: authController.profileModel!.cashInHands)),
-                      //   const SizedBox(width: Dimensions.paddingSizeSmall),
-                      //   Expanded(child: WalletWidget(title: 'withdrawable_balance'.tr, value: authController.profileModel!.balance)),
-                      // ]),
-                      // const SizedBox(height: Dimensions.paddingSizeSmall),
-                      //
-                      // WalletWidget(title: 'pending_withdraw'.tr, value: authController.profileModel!.pendingWithdraw, isAmountAndTextInRow: true),
-                      // const SizedBox(height: Dimensions.paddingSizeSmall),
+                      Row(children: [
+                        Expanded(child: WalletWidget(title: 'cash_in_hand'.tr, value: authController.profileModel!.cashInHands)),
+                        const SizedBox(width: Dimensions.paddingSizeSmall),
+                        Expanded(child: WalletWidget(title: 'withdrawable_balance'.tr, value: authController.profileModel!.balance)),
+                      ]),
+                      const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                      // WalletWidget(title: 'already_withdrawn'.tr, value: authController.profileModel!.alreadyWithdrawn, isAmountAndTextInRow: true),
+                      WalletWidget(title: 'pending_withdraw'.tr, value: authController.profileModel!.pendingWithdraw, isAmountAndTextInRow: true),
+                      const SizedBox(height: Dimensions.paddingSizeSmall),
+
+                      WalletWidget(title: 'already_withdrawn'.tr, value: authController.profileModel!.alreadyWithdrawn, isAmountAndTextInRow: true),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
 
                       WalletWidget(title: 'total_earning'.tr, value: authController.profileModel!.totalEarning , isAmountAndTextInRow: true),
 
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: Dimensions.paddingSizeExtraLarge),
-                      //   child: Row(children: [
-                      //
-                      //     InkWell(
-                      //       onTap: () {
-                      //         if(bankController.selectedIndex != 0) {
-                      //           bankController.setIndex(0);
-                      //         }
-                      //       },
-                      //       hoverColor: Colors.transparent,
-                      //       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      //
-                      //         Text('withdraw_request'.tr, style: robotoMedium.copyWith(
-                      //           color: bankController.selectedIndex == 0 ? Colors.blue : Theme.of(context).disabledColor,
-                      //         )),
-                      //         const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                      //
-                      //         Container(
-                      //           height: 3, width: 120,
-                      //           margin: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
-                      //           decoration: BoxDecoration(
-                      //             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                      //             color: bankController.selectedIndex == 0 ? Colors.blue : null,
-                      //           ),
-                      //         ),
-                      //
-                      //       ]),
-                      //     ),
-                      //     const SizedBox(width: Dimensions.paddingSizeSmall),
-                      //
-                      //     InkWell(
-                      //       onTap: () {
-                      //         if(bankController.selectedIndex != 1) {
-                      //           bankController.setIndex(1);
-                      //         }
-                      //       },
-                      //       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      //
-                      //         Text('payment_history'.tr, style: robotoMedium.copyWith(
-                      //           color: bankController.selectedIndex == 1 ? Colors.blue : Theme.of(context).disabledColor,
-                      //         )),
-                      //         const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                      //
-                      //         Container(
-                      //           height: 3, width: 120,
-                      //           margin: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
-                      //           decoration: BoxDecoration(
-                      //             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                      //             color: bankController.selectedIndex == 1 ? Colors.blue : null,
-                      //           ),
-                      //         ),
-                      //
-                      //       ]),
-                      //     ),
-                      //   ]),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: Dimensions.paddingSizeExtraLarge),
+                        child: Row(children: [
+
+                          InkWell(
+                            onTap: () {
+                              if(bankController.selectedIndex != 0) {
+                                bankController.setIndex(0);
+                              }
+                            },
+                            hoverColor: Colors.transparent,
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+                              Text('withdraw_request'.tr, style: robotoMedium.copyWith(
+                                color: bankController.selectedIndex == 0 ? Colors.blue : Theme.of(context).disabledColor,
+                              )),
+                              const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+
+                              Container(
+                                height: 3, width: 120,
+                                margin: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                  color: bankController.selectedIndex == 0 ? Colors.blue : null,
+                                ),
+                              ),
+
+                            ]),
+                          ),
+                          const SizedBox(width: Dimensions.paddingSizeSmall),
+
+                          InkWell(
+                            onTap: () {
+                              if(bankController.selectedIndex != 1) {
+                                bankController.setIndex(1);
+                              }
+                            },
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+                              Text('payment_history'.tr, style: robotoMedium.copyWith(
+                                color: bankController.selectedIndex == 1 ? Colors.blue : Theme.of(context).disabledColor,
+                              )),
+                              const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+
+                              Container(
+                                height: 3, width: 120,
+                                margin: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                  color: bankController.selectedIndex == 1 ? Colors.blue : null,
+                                ),
+                              ),
+
+                            ]),
+                          ),
+                        ]),
+                      ),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                      // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                      //
-                      //   Text("transaction_history".tr, style: robotoMedium),
-                      //
-                      //   InkWell(
-                      //     onTap: () {
-                      //       if(bankController.selectedIndex == 0) {
-                      //         Get.toNamed(RouteHelper.getWithdrawHistoryRoute());
-                      //       }
-                      //       if(bankController.selectedIndex == 1) {
-                      //         Get.toNamed(RouteHelper.getPaymentHistoryRoute());
-                      //       }
-                      //
-                      //     },
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                      //       child: Text('view_all'.tr, style: robotoMedium.copyWith(
-                      //         fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor,
-                      //       )),
-                      //     ),
-                      //   ),
-                      //
-                      // ]),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+
+                        Text("transaction_history".tr, style: robotoMedium),
+
+                        InkWell(
+                          onTap: () {
+                            if(bankController.selectedIndex == 0) {
+                              Get.toNamed(RouteHelper.getWithdrawHistoryRoute());
+                            }
+                            if(bankController.selectedIndex == 1) {
+                              Get.toNamed(RouteHelper.getPaymentHistoryRoute());
+                            }
+
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                            child: Text('view_all'.tr, style: robotoMedium.copyWith(
+                              fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor,
+                            )),
+                          ),
+                        ),
+
+                      ]),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                      // if(bankController.selectedIndex == 0)
-                      //   bankController.withdrawList != null ? bankController.withdrawList!.isNotEmpty ? ListView.builder(
-                      //     physics: const NeverScrollableScrollPhysics(),
-                      //     shrinkWrap: true,
-                      //     itemCount: bankController.withdrawList!.length > 10 ? 10 : bankController.withdrawList!.length,
-                      //     itemBuilder: (context, index) {
-                      //       return WithdrawWidget(
-                      //         withdrawModel: bankController.withdrawList![index],
-                      //         showDivider: index != (bankController.withdrawList!.length > 25 ? 25 : bankController.withdrawList!.length-1),
-                      //       );
-                      //     },
-                      //   ) : Center(child: Padding(padding: const EdgeInsets.only(top: 100), child: Text('no_transaction_found'.tr)))
-                      //       : const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
-                      //
-                      // if (bankController.selectedIndex == 1)
-                      //   bankController.transactions != null ? bankController.transactions!.isNotEmpty ? ListView.builder(
-                      //     itemCount: bankController.transactions!.length > 25 ? 25 : bankController.transactions!.length,
-                      //     shrinkWrap: true,
-                      //     padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
-                      //     physics: const NeverScrollableScrollPhysics(),
-                      //     itemBuilder: (context, index) {
-                      //       return Column(children: [
-                      //
-                      //         Padding(
-                      //           padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
-                      //           child: Row(children: [
-                      //             Expanded(
-                      //               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      //                 Text(PriceConverter.convertPrice(bankController.transactions![index].amount), style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
-                      //                 const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                      //
-                      //                 Text('${'paid_via'.tr} ${bankController.transactions![index].method?.replaceAll('_', ' ').capitalize??''}', style: robotoRegular.copyWith(
-                      //                   fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor,
-                      //                 )),
-                      //               ]),
-                      //             ),
-                      //             Text(bankController.transactions![index].paymentTime.toString(),
-                      //               style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-                      //             ),
-                      //           ]),
-                      //         ),
-                      //
-                      //         const Divider(height: 1),
-                      //       ]);
-                      //     },
-                      //   ) : Center(child: Padding(padding: const EdgeInsets.only(top: 100), child: Text('no_transaction_found'.tr)))
-                      //       : const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
+                      if(bankController.selectedIndex == 0)
+                        bankController.withdrawList != null ? bankController.withdrawList!.isNotEmpty ? ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: bankController.withdrawList!.length > 10 ? 10 : bankController.withdrawList!.length,
+                          itemBuilder: (context, index) {
+                            return WithdrawWidget(
+                              withdrawModel: bankController.withdrawList![index],
+                              showDivider: index != (bankController.withdrawList!.length > 25 ? 25 : bankController.withdrawList!.length-1),
+                            );
+                          },
+                        ) : Center(child: Padding(padding: const EdgeInsets.only(top: 100), child: Text('no_transaction_found'.tr)))
+                            : const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
+
+                      if (bankController.selectedIndex == 1)
+                        bankController.transactions != null ? bankController.transactions!.isNotEmpty ? ListView.builder(
+                          itemCount: bankController.transactions!.length > 25 ? 25 : bankController.transactions!.length,
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Column(children: [
+
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
+                                child: Row(children: [
+                                  Expanded(
+                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                      Text(PriceConverter.convertPrice(bankController.transactions![index].amount), style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
+                                      const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+
+                                      Text('${'paid_via'.tr} ${bankController.transactions![index].method?.replaceAll('_', ' ').capitalize??''}', style: robotoRegular.copyWith(
+                                        fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor,
+                                      )),
+                                    ]),
+                                  ),
+                                  Text(bankController.transactions![index].paymentTime.toString(),
+                                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+                                  ),
+                                ]),
+                              ),
+
+                              const Divider(height: 1),
+                            ]);
+                          },
+                        ) : Center(child: Padding(padding: const EdgeInsets.only(top: 100), child: Text('no_transaction_found'.tr)))
+                            : const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
 
 
                     ]),

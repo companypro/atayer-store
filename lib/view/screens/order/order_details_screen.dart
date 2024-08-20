@@ -133,7 +133,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
             OrderModel? controllerOrderModel = orderController.orderModel;
 
             bool restConfModel = Get.find<SplashController>().configModel!.orderConfirmationModel != 'deliveryman';
-            bool showSlider = controllerOrderModel != null ? (controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away' || restConfModel || selfDelivery)) || controllerOrderModel.orderStatus == 'confirmed' || controllerOrderModel.orderStatus == 'processing' || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null) || (controllerOrderModel.orderStatus == 'handover' && (selfDelivery || controllerOrderModel.orderType == 'take_away')) : false;
+            bool showSlider = controllerOrderModel != null ? (controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away' || restConfModel || selfDelivery))
+                || controllerOrderModel.orderStatus == 'confirmed' || controllerOrderModel.orderStatus == 'processing'
+                || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null)
+                || (controllerOrderModel.orderStatus == 'handover' && (selfDelivery || controllerOrderModel.orderType == 'take_away')) : false;
             bool showBottomView = controllerOrderModel != null ? showSlider || controllerOrderModel.orderStatus == 'picked_up' || widget.isRunningOrder : false;
             bool showDeliveryConfirmImage = orderController.showDeliveryImageField;
 
@@ -172,7 +175,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
               }
             }
             double subTotal = itemsPrice + addOns;
-            double total = itemsPrice  + deliveryCharge! + addOns;
+            double total = itemsPrice + addOns - discount+ (taxIncluded! ? 0 : tax!) + deliveryCharge! - couponDiscount! + dmTips! + additionalCharge;
 
             return (orderController.orderDetailsModel != null && controllerOrderModel != null) ? Column(children: [
 
@@ -439,27 +442,27 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                     ) : const SizedBox(),
                     const SizedBox(width: Dimensions.paddingSizeSmall),
 
-                    // (order.orderStatus != 'delivered' && order.orderStatus != 'failed' && Get.find<AuthController>().modulePermission!.chat!
-                    // && order.orderStatus != 'canceled' && order.orderStatus != 'refunded') ? order.isGuest! ? const SizedBox() : TextButton.icon(
-                    //   onPressed: () async {
-                    //     _timer.cancel();
-                    //     await Get.toNamed(RouteHelper.getChatRoute(
-                    //       notificationBody: NotificationBody(
-                    //         orderId: order.id, customerId: order.customer!.id,
-                    //       ),
-                    //       user: User(
-                    //         id: order.customer!.id, fName: order.customer!.fName,
-                    //         lName: order.customer!.lName, image: order.customer!.image,
-                    //       ),
-                    //     ));
-                    //     _startApiCalling();
-                    //   },
-                    //   icon: Icon(Icons.message, color: Theme.of(context).primaryColor, size: 20),
-                    //   label: Text(
-                    //     'chat'.tr,
-                    //     style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
-                    //   ),
-                    // ) : const SizedBox(),
+                    (order.orderStatus != 'delivered' && order.orderStatus != 'failed' && Get.find<AuthController>().modulePermission!.chat!
+                    && order.orderStatus != 'canceled' && order.orderStatus != 'refunded') ? order.isGuest! ? const SizedBox() : TextButton.icon(
+                      onPressed: () async {
+                        _timer.cancel();
+                        await Get.toNamed(RouteHelper.getChatRoute(
+                          notificationBody: NotificationBody(
+                            orderId: order.id, customerId: order.customer!.id,
+                          ),
+                          user: User(
+                            id: order.customer!.id, fName: order.customer!.fName,
+                            lName: order.customer!.lName, image: order.customer!.image,
+                          ),
+                        ));
+                        _startApiCalling();
+                      },
+                      icon: Icon(Icons.message, color: Theme.of(context).primaryColor, size: 20),
+                      label: Text(
+                        'chat'.tr,
+                        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
+                      ),
+                    ) : const SizedBox(),
                   ]) : const SizedBox(),
                   const SizedBox(height: Dimensions.paddingSizeLarge),
 
@@ -487,43 +490,43 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                         ),
                       ])),
 
-                      // (controllerOrderModel.orderStatus != 'delivered' && controllerOrderModel.orderStatus != 'failed'
-                      // && controllerOrderModel.orderStatus != 'canceled' && controllerOrderModel.orderStatus != 'refunded') ? TextButton.icon(
-                      //   onPressed: () async {
-                      //     if(await canLaunchUrlString('tel:${order.deliveryMan!.phone ?? '' }')) {
-                      //       launchUrlString('tel:${order.deliveryMan!.phone ?? '' }', mode: LaunchMode.externalApplication);
-                      //     }else {
-                      //       showCustomSnackBar('${'can_not_launch'.tr} ${order.deliveryMan!.phone ?? ''}');
-                      //     }
-                      //   },
-                      //   icon: Icon(Icons.call, color: Theme.of(context).primaryColor, size: 20),
-                      //   label: Text(
-                      //     'call'.tr,
-                      //     style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
-                      //   ),
-                      // ) : const SizedBox(),
-                      //
-                      // (controllerOrderModel.orderStatus != 'delivered' && controllerOrderModel.orderStatus != 'failed' && controllerOrderModel.orderStatus != 'canceled'
-                      // && controllerOrderModel.orderStatus != 'refunded' && Get.find<AuthController>().modulePermission!.chat!) ? TextButton.icon(
-                      //   onPressed: () async {
-                      //     _timer.cancel();
-                      //     await Get.toNamed(RouteHelper.getChatRoute(
-                      //       notificationBody: NotificationBody(
-                      //         orderId: controllerOrderModel.id, deliveryManId: order.deliveryMan!.id,
-                      //       ),
-                      //       user: User(
-                      //         id: controllerOrderModel.deliveryMan!.id, fName: controllerOrderModel.deliveryMan!.fName,
-                      //         lName: controllerOrderModel.deliveryMan!.lName, image: controllerOrderModel.deliveryMan!.image,
-                      //       ),
-                      //     ));
-                      //     _startApiCalling();
-                      //   },
-                      //   icon: Icon(Icons.chat_bubble_outline, color: Theme.of(context).primaryColor, size: 20),
-                      //   label: Text(
-                      //     'chat'.tr,
-                      //     style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
-                      //   ),
-                      // ) : const SizedBox(),
+                      (controllerOrderModel.orderStatus != 'delivered' && controllerOrderModel.orderStatus != 'failed'
+                      && controllerOrderModel.orderStatus != 'canceled' && controllerOrderModel.orderStatus != 'refunded') ? TextButton.icon(
+                        onPressed: () async {
+                          if(await canLaunchUrlString('tel:${order.deliveryMan!.phone ?? '' }')) {
+                            launchUrlString('tel:${order.deliveryMan!.phone ?? '' }', mode: LaunchMode.externalApplication);
+                          }else {
+                            showCustomSnackBar('${'can_not_launch'.tr} ${order.deliveryMan!.phone ?? ''}');
+                          }
+                        },
+                        icon: Icon(Icons.call, color: Theme.of(context).primaryColor, size: 20),
+                        label: Text(
+                          'call'.tr,
+                          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
+                        ),
+                      ) : const SizedBox(),
+
+                      (controllerOrderModel.orderStatus != 'delivered' && controllerOrderModel.orderStatus != 'failed' && controllerOrderModel.orderStatus != 'canceled'
+                      && controllerOrderModel.orderStatus != 'refunded' && Get.find<AuthController>().modulePermission!.chat!) ? TextButton.icon(
+                        onPressed: () async {
+                          _timer.cancel();
+                          await Get.toNamed(RouteHelper.getChatRoute(
+                            notificationBody: NotificationBody(
+                              orderId: controllerOrderModel.id, deliveryManId: order.deliveryMan!.id,
+                            ),
+                            user: User(
+                              id: controllerOrderModel.deliveryMan!.id, fName: controllerOrderModel.deliveryMan!.fName,
+                              lName: controllerOrderModel.deliveryMan!.lName, image: controllerOrderModel.deliveryMan!.image,
+                            ),
+                          ));
+                          _startApiCalling();
+                        },
+                        icon: Icon(Icons.chat_bubble_outline, color: Theme.of(context).primaryColor, size: 20),
+                        label: Text(
+                          'chat'.tr,
+                          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
+                        ),
+                      ) : const SizedBox(),
 
                     ]),
 
@@ -556,13 +559,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                     thickness: 1, color: Theme.of(context).hintColor.withOpacity(0.5),
                   ) : const SizedBox(),
 
-                  // Get.find<SplashController>().getModuleConfig(order.moduleType).addOn! ? Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text('${'subtotal'.tr} ${taxIncluded ? '(${'tax_included'.tr})' : ''}', style: robotoMedium),
-                  //     Text(PriceConverter.convertPrice(subTotal), style: robotoMedium),
-                  //   ],
-                  // ) : const SizedBox(),
+                  Get.find<SplashController>().getModuleConfig(order.moduleType).addOn! ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('${'subtotal'.tr} ${taxIncluded ? '(${'tax_included'.tr})' : ''}', style: robotoMedium),
+                      Text(PriceConverter.convertPrice(subTotal), style: robotoMedium),
+                    ],
+                  ) : const SizedBox(),
                   SizedBox(height: Get.find<SplashController>().getModuleConfig(order.moduleType).addOn! ? 10 : 0),
 
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -578,22 +581,28 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                   ]),
                   const SizedBox(height: 10),
 
-                  // couponDiscount > 0 ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                  //   Text('coupon_discount'.tr, style: robotoRegular),
-                  //   Text(
-                  //     '(-) ${PriceConverter.convertPrice(couponDiscount)}',
-                  //     style: robotoRegular,
-                  //   ),
-                  // ]) : const SizedBox(),
+                  couponDiscount > 0 ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    Text('coupon_discount'.tr, style: robotoRegular),
+                    Text(
+                      '(-) ${PriceConverter.convertPrice(couponDiscount)}',
+                      style: robotoRegular,
+                    ),
+                  ]) : const SizedBox(),
+                  SizedBox(height: couponDiscount > 0 ? 10 : 0),
 
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text('delivery_man_tips'.tr, style: robotoRegular),
-                  //     Text('(+) ${PriceConverter.convertPrice(dmTips)}', style: robotoRegular),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 10),
+                  !taxIncluded ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    Text('vat_tax'.tr, style: robotoRegular),
+                    Text('(+) ${PriceConverter.convertPrice(tax)}', style: robotoRegular),
+                  ]) : const SizedBox(),
+                  SizedBox(height: taxIncluded ? 0 : 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('delivery_man_tips'.tr, style: robotoRegular),
+                      Text('(+) ${PriceConverter.convertPrice(dmTips)}', style: robotoRegular),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
 
                   (order.additionalCharge != null && order.additionalCharge! > 0) ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                     Text(Get.find<SplashController>().configModel!.additionalChargeName!, style: robotoRegular),
@@ -669,404 +678,234 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                 ]))),
               ))),
 
-              // showDeliveryConfirmImage && Get.find<SplashController>().configModel!.dmPictureUploadStatus! && controllerOrderModel.orderStatus != 'delivered'
-              // ? Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeSmall),
-              //   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              //     const SizedBox(height: Dimensions.paddingSizeDefault),
-              //     Text('completed_after_delivery_picture'.tr, style: robotoRegular),
-              //     const SizedBox(height: Dimensions.paddingSizeSmall),
-              //
-              //     Container(
-              //       height: 80,
-              //       decoration: BoxDecoration(
-              //         color: Theme.of(context).primaryColor.withOpacity(0.05),
-              //         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              //       ),
-              //       padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-              //       child: ListView.builder(
-              //         scrollDirection: Axis.horizontal,
-              //         physics: const BouncingScrollPhysics(),
-              //         itemCount: orderController.pickedPrescriptions.length+1,
-              //         itemBuilder: (context, index) {
-              //           XFile? file = index == orderController.pickedPrescriptions.length ? null : orderController.pickedPrescriptions[index];
-              //           if(index < 5 && index == orderController.pickedPrescriptions.length) {
-              //             return InkWell(
-              //               onTap: () {
-              //                 Get.bottomSheet(const CameraButtonSheet());
-              //               },
-              //               child: Container(
-              //                 height: 60, width: 60, alignment: Alignment.center, decoration: BoxDecoration(
-              //                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              //                 color: Theme.of(context).primaryColor.withOpacity(0.1),
-              //               ),
-              //                 child:  Icon(Icons.camera_alt_sharp, color: Theme.of(context).primaryColor, size: 32),
-              //               ),
-              //             );
-              //           }
-              //           return file != null ? Container(
-              //             margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-              //             decoration: BoxDecoration(
-              //               borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              //             ),
-              //             child: Stack(children: [
-              //               ClipRRect(
-              //                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              //                 child: GetPlatform.isWeb ? Image.network(
-              //                   file.path, width: 60, height: 60, fit: BoxFit.cover,
-              //                 ) : Image.file(
-              //                   File(file.path), width: 60, height: 60, fit: BoxFit.cover,
-              //                 ),
-              //               ),
-              //               Positioned(
-              //                 right: 0, top: 0,
-              //                 child: InkWell(
-              //                   onTap: () => orderController.removePrescriptionImage(index),
-              //                   child: const Padding(
-              //                     padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
-              //                     child: Icon(Icons.delete_forever, color: Colors.red),
-              //                   ),
-              //                 ),
-              //               ),
-              //             ]),
-              //           ) : const SizedBox();
-              //         },
-              //       ),
-              //     ),
-              //   ]),
-              // ) : const SizedBox(),
+              showDeliveryConfirmImage && Get.find<SplashController>().configModel!.dmPictureUploadStatus! && controllerOrderModel.orderStatus != 'delivered'
+              ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeSmall),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const SizedBox(height: Dimensions.paddingSizeDefault),
+                  Text('completed_after_delivery_picture'.tr, style: robotoRegular),
+                  const SizedBox(height: Dimensions.paddingSizeSmall),
 
-              // showDeliveryConfirmImage && controllerOrderModel.orderStatus != 'delivered' ? Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-              //   child: CustomButton(
-              //     buttonText: 'complete_delivery'.tr,
-              //     onPressed: () {
-              //       if(Get.find<SplashController>().configModel!.orderDeliveryVerification!) {
-              //         orderController.sendDeliveredNotification(controllerOrderModel.id);
-              //
-              //         Get.bottomSheet(VerifyDeliverySheet(
-              //           orderID: controllerOrderModel.id, verify: Get.find<SplashController>().configModel!.orderDeliveryVerification,
-              //           orderAmount: order.paymentMethod == 'partial_payment' ? order.payments![1].amount!.toDouble() : controllerOrderModel.orderAmount,
-              //           cod: controllerOrderModel.paymentMethod == 'cash_on_delivery' || (order.paymentMethod == 'partial_payment' && order.payments![1].paymentMethod == 'cash_on_delivery'),
-              //         ), isScrollControlled: true).then((isSuccess) {
-              //
-              //           if(isSuccess && controllerOrderModel.paymentMethod == 'cash_on_delivery' || (order.paymentMethod == 'partial_payment' && order.payments![1].paymentMethod == 'cash_on_delivery')){
-              //             Get.bottomSheet(CollectMoneyDeliverySheet(
-              //               orderID: controllerOrderModel.id, verify: Get.find<SplashController>().configModel!.orderDeliveryVerification,
-              //               orderAmount: order.paymentMethod == 'partial_payment' ? order.payments![1].amount!.toDouble() : controllerOrderModel.orderAmount,
-              //               cod: controllerOrderModel.paymentMethod == 'cash_on_delivery' || (order.paymentMethod == 'partial_payment' && order.payments![1].paymentMethod == 'cash_on_delivery'),
-              //             ), isScrollControlled: true, isDismissible: false);
-              //           }
-              //         });
-              //       } else {
-              //         Get.bottomSheet(CollectMoneyDeliverySheet(
-              //           orderID: controllerOrderModel.id, verify: Get.find<SplashController>().configModel!.orderDeliveryVerification,
-              //           orderAmount: order.paymentMethod == 'partial_payment' ? order.payments![1].amount!.toDouble() : controllerOrderModel.orderAmount,
-              //           cod: controllerOrderModel.paymentMethod == 'cash_on_delivery' || (order.paymentMethod == 'partial_payment' && order.payments![1].paymentMethod == 'cash_on_delivery'),
-              //         ), isScrollControlled: true);
-              //       }
-              //
-              //     },
-              //   ),
-              // ) : showBottomView ? (controllerOrderModel.orderStatus == 'picked_up') ? Container(
-              //   padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-              //   width: MediaQuery.of(context).size.width,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-              //     border: Border.all(width: 1),
-              //   ),
-              //   alignment: Alignment.center,
-              //   child: Text('item_is_on_the_way'.tr, style: robotoMedium),
-              // ) : showSlider ? (controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away'
-              // || restConfModel || selfDelivery) && cancelPermission!) ? Padding(
-              //   padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-              //   child: Row(children: [
-              //
-              //     Expanded(child: TextButton(
-              //       /*onPressed: () => Get.dialog(ConfirmationDialog(
-              //         icon: Images.warning, title: 'are_you_sure_to_cancel'.tr, description: 'you_want_to_cancel_this_order'.tr,
-              //         onYesPressed: () {
-              //           orderController.updateOrderStatus(widget.orderId, AppConstants.CANCELED, back: true);
-              //         },
-              //       ), barrierDismissible: false),*/
-              //       onPressed: (){
-              //         orderController.setOrderCancelReason('');
-              //         Get.dialog(CancellationDialogue(orderId: order.id));
-              //       },
-              //       style: TextButton.styleFrom(
-              //         minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
-              //         shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-              //           side: BorderSide(width: 1, color: Theme.of(context).textTheme.bodyLarge!.color!),
-              //         ),
-              //       ),
-              //       child: Text('cancel'.tr, textAlign: TextAlign.center, style: robotoRegular.copyWith(
-              //         color: Theme.of(context).textTheme.bodyLarge!.color,
-              //         fontSize: Dimensions.fontSizeLarge,
-              //       )),
-              //     )),
-              //     const SizedBox(width: Dimensions.paddingSizeSmall),
-              //
-              //     Expanded(child: CustomButton(
-              //       buttonText: 'confirm'.tr, height: 40,
-              //       onPressed: () {
-              //         Get.dialog(ConfirmationDialog(
-              //           icon: Images.warning, title: 'are_you_sure_to_confirm'.tr, description: 'you_want_to_confirm_this_order'.tr,
-              //           onYesPressed: () {
-              //             orderController.updateOrderStatus(widget.orderId, AppConstants.confirmed, back: true);
-              //           },
-              //         ), barrierDismissible: false);
-              //       },
-              //     )),
-              //
-              //   ]),
-              // ) : SliderButton(
-              //   action: () {
-              //
-              //     if(controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away'
-              //         || restConfModel || selfDelivery))  {
-              //       Get.dialog(ConfirmationDialog(
-              //         icon: Images.warning, title: 'are_you_sure_to_confirm'.tr, description: 'you_want_to_confirm_this_order'.tr,
-              //         onYesPressed: () {
-              //           orderController.updateOrderStatus(widget.orderId, AppConstants.confirmed, back: true);
-              //         },
-              //         onNoPressed: () {
-              //           if(cancelPermission!) {
-              //             orderController.updateOrderStatus(widget.orderId, AppConstants.canceled, back: true);
-              //           }else {
-              //             Get.back();
-              //           }
-              //         },
-              //       ), barrierDismissible: false);
-              //     }
-              //
-              //     else if(controllerOrderModel.orderStatus == 'processing') {
-              //       Get.find<OrderController>().updateOrderStatus(widget.orderId, AppConstants.handover);
-              //     }
-              //
-              //     else if(controllerOrderModel.orderStatus == 'confirmed' || (controllerOrderModel.orderStatus == 'accepted'
-              //         && controllerOrderModel.confirmed != null)) {
-              //       debugPrint('accepted & confirm call----------------');
-              //       Get.dialog(InputDialog(
-              //         icon: Images.warning,
-              //         title: 'are_you_sure_to_confirm'.tr,
-              //         description: 'enter_processing_time_in_minutes'.tr, onPressed: (String? time){
-              //         Get.find<OrderController>().updateOrderStatus(controllerOrderModel.id, AppConstants.processing, processingTime: time).then((success) {
-              //           Get.back();
-              //           if(success) {
-              //             Get.find<AuthController>().getProfile();
-              //             Get.find<OrderController>().getCurrentOrders();
-              //           }
-              //         });
-              //       },
-              //       ));
-              //     }
-              //
-              //     else if((controllerOrderModel.orderStatus == 'handover' && (controllerOrderModel.orderType == 'take_away' || selfDelivery))) {
-              //       if (Get.find<SplashController>().configModel!.orderDeliveryVerification! || controllerOrderModel.paymentMethod == 'cash_on_delivery') {
-              //         orderController.changeDeliveryImageStatus();
-              //         print('=====jjj : ${Get.find<SplashController>().configModel!.dmPictureUploadStatus!}');
-              //         if(Get.find<SplashController>().configModel!.dmPictureUploadStatus!) {
-              //           Get.dialog(const DialogImage(), barrierDismissible: false);
-              //         }
-              //       } else {
-              //         Get.find<OrderController>().updateOrderStatus(controllerOrderModel.id, AppConstants.delivered);
-              //       }
-              //     }
-              //
-              //   },
-              //   label: Text(
-              //     (controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away' || restConfModel || selfDelivery)) ? 'swipe_to_confirm_order'.tr
-              //         : (controllerOrderModel.orderStatus == 'confirmed' || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null))
-              //         ? Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'swipe_to_cooking'.tr : 'swipe_to_process'.tr
-              //         : (controllerOrderModel.orderStatus == 'processing') ? 'swipe_if_ready_for_handover'.tr
-              //         : (controllerOrderModel.orderStatus == 'handover' && (controllerOrderModel.orderType == 'take_away' || selfDelivery)) ? 'swipe_to_deliver_order'.tr : '',
-              //     style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).primaryColor),
-              //   ),
-              //   dismissThresholds: 0.5, dismissible: false, shimmer: true,
-              //   width: 1170, height: 60, buttonSize: 50, radius: 10,
-              //   icon: Center(child: Icon(
-              //     Get.find<LocalizationController>().isLtr ? Icons.double_arrow_sharp : Icons.keyboard_arrow_left,
-              //     color: Colors.white, size: 20.0,
-              //   )),
-              //   isLtr: Get.find<LocalizationController>().isLtr,
-              //   boxShadow: const BoxShadow(blurRadius: 0),
-              //   buttonColor: Theme.of(context).primaryColor,
-              //   backgroundColor: const Color(0xffF4F7FC),
-              //   baseColor: Theme.of(context).primaryColor,
-              // ) : const SizedBox() : const SizedBox(),
-              if(controllerOrderModel.orderStatus == 'pending')
-                Padding(
-                  padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                  child: Row(children: [
+                  Container(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                    ),
+                    padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: orderController.pickedPrescriptions.length+1,
+                      itemBuilder: (context, index) {
+                        XFile? file = index == orderController.pickedPrescriptions.length ? null : orderController.pickedPrescriptions[index];
+                        if(index < 5 && index == orderController.pickedPrescriptions.length) {
+                          return InkWell(
+                            onTap: () {
+                              Get.bottomSheet(const CameraButtonSheet());
+                            },
+                            child: Container(
+                              height: 60, width: 60, alignment: Alignment.center, decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                              color: Theme.of(context).primaryColor.withOpacity(0.1),
+                            ),
+                              child:  Icon(Icons.camera_alt_sharp, color: Theme.of(context).primaryColor, size: 32),
+                            ),
+                          );
+                        }
+                        return file != null ? Container(
+                          margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                          ),
+                          child: Stack(children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                              child: GetPlatform.isWeb ? Image.network(
+                                file.path, width: 60, height: 60, fit: BoxFit.cover,
+                              ) : Image.file(
+                                File(file.path), width: 60, height: 60, fit: BoxFit.cover,
+                              ),
+                            ),
+                            Positioned(
+                              right: 0, top: 0,
+                              child: InkWell(
+                                onTap: () => orderController.removePrescriptionImage(index),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
+                                  child: Icon(Icons.delete_forever, color: Colors.red),
+                                ),
+                              ),
+                            ),
+                          ]),
+                        ) : const SizedBox();
+                      },
+                    ),
+                  ),
+                ]),
+              ) : const SizedBox(),
 
-                    Expanded(child: TextButton(
-                      /*onPressed: () => Get.dialog(ConfirmationDialog(
+              showDeliveryConfirmImage && controllerOrderModel.orderStatus != 'delivered' ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+                child: CustomButton(
+                  buttonText: 'complete_delivery'.tr,
+                  onPressed: () {
+                    if(Get.find<SplashController>().configModel!.orderDeliveryVerification!) {
+                      orderController.sendDeliveredNotification(controllerOrderModel.id);
+
+                      Get.bottomSheet(VerifyDeliverySheet(
+                        orderID: controllerOrderModel.id, verify: Get.find<SplashController>().configModel!.orderDeliveryVerification,
+                        orderAmount: order.paymentMethod == 'partial_payment' ? order.payments![1].amount!.toDouble() : controllerOrderModel.orderAmount,
+                        cod: controllerOrderModel.paymentMethod == 'cash_on_delivery' || (order.paymentMethod == 'partial_payment' && order.payments![1].paymentMethod == 'cash_on_delivery'),
+                      ), isScrollControlled: true).then((isSuccess) {
+
+                        if(isSuccess && controllerOrderModel.paymentMethod == 'cash_on_delivery' || (order.paymentMethod == 'partial_payment' && order.payments![1].paymentMethod == 'cash_on_delivery')){
+                          Get.bottomSheet(CollectMoneyDeliverySheet(
+                            orderID: controllerOrderModel.id, verify: Get.find<SplashController>().configModel!.orderDeliveryVerification,
+                            orderAmount: order.paymentMethod == 'partial_payment' ? order.payments![1].amount!.toDouble() : controllerOrderModel.orderAmount,
+                            cod: controllerOrderModel.paymentMethod == 'cash_on_delivery' || (order.paymentMethod == 'partial_payment' && order.payments![1].paymentMethod == 'cash_on_delivery'),
+                          ), isScrollControlled: true, isDismissible: false);
+                        }
+                      });
+                    } else {
+                      Get.bottomSheet(CollectMoneyDeliverySheet(
+                        orderID: controllerOrderModel.id, verify: Get.find<SplashController>().configModel!.orderDeliveryVerification,
+                        orderAmount: order.paymentMethod == 'partial_payment' ? order.payments![1].amount!.toDouble() : controllerOrderModel.orderAmount,
+                        cod: controllerOrderModel.paymentMethod == 'cash_on_delivery' || (order.paymentMethod == 'partial_payment' && order.payments![1].paymentMethod == 'cash_on_delivery'),
+                      ), isScrollControlled: true);
+                    }
+
+                  },
+                ),
+              ) : showBottomView ? (controllerOrderModel.orderStatus == 'picked_up') ? Container(
+                padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                  border: Border.all(width: 1),
+                ),
+                alignment: Alignment.center,
+                child: Text('item_is_on_the_way'.tr, style: robotoMedium),
+              ) : showSlider ? (controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away'
+              || restConfModel || selfDelivery) && cancelPermission!) ? Padding(
+                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                child: Row(children: [
+
+                  Expanded(child: TextButton(
+                    /*onPressed: () => Get.dialog(ConfirmationDialog(
                       icon: Images.warning, title: 'are_you_sure_to_cancel'.tr, description: 'you_want_to_cancel_this_order'.tr,
                       onYesPressed: () {
                         orderController.updateOrderStatus(widget.orderId, AppConstants.CANCELED, back: true);
                       },
                     ), barrierDismissible: false),*/
-                      onPressed: (){
-                        orderController.setOrderCancelReason('');
-                        Get.dialog(CancellationDialogue(orderId: order.id));
-                      },
-                      style: TextButton.styleFrom(
-                        minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                          side: BorderSide(width: 1, color: Theme.of(context).textTheme.bodyLarge!.color!),
-                        ),
+                    onPressed: (){
+                      orderController.setOrderCancelReason('');
+                      Get.dialog(CancellationDialogue(orderId: order.id));
+                    },
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                        side: BorderSide(width: 1, color: Theme.of(context).textTheme.bodyLarge!.color!),
                       ),
-                      child: Text('cancel'.tr, textAlign: TextAlign.center, style: robotoRegular.copyWith(
-                        color: Theme.of(context).textTheme.bodyLarge!.color,
-                        fontSize: Dimensions.fontSizeLarge,
-                      )),
+                    ),
+                    child: Text('cancel'.tr, textAlign: TextAlign.center, style: robotoRegular.copyWith(
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
+                      fontSize: Dimensions.fontSizeLarge,
                     )),
-                    const SizedBox(width: Dimensions.paddingSizeSmall),
+                  )),
+                  const SizedBox(width: Dimensions.paddingSizeSmall),
 
-                    Expanded(child: CustomButton(
-                      buttonText: 'confirm'.tr, height: 40,
-                      onPressed: () {
-                        Get.dialog(ConfirmationDialog(
-                          icon: Images.warning, title: 'are_you_sure_to_confirm'.tr, description: 'you_want_to_confirm_this_order'.tr,
-                          onYesPressed: () {
-                            orderController.updateOrderStatus(widget.orderId, AppConstants.processing, back: true);
-                          },
-                        ), barrierDismissible: false);
+                  Expanded(child: CustomButton(
+                    buttonText: 'confirm'.tr, height: 40,
+                    onPressed: () {
+                      Get.dialog(ConfirmationDialog(
+                        icon: Images.warning, title: 'are_you_sure_to_confirm'.tr, description: 'you_want_to_confirm_this_order'.tr,
+                        onYesPressed: () {
+                          orderController.updateOrderStatus(widget.orderId, AppConstants.confirmed, back: true);
+                        },
+                      ), barrierDismissible: false);
+                    },
+                  )),
+
+                ]),
+              ) : SliderButton(
+                action: () {
+
+                  if(controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away'
+                      || restConfModel || selfDelivery))  {
+                    Get.dialog(ConfirmationDialog(
+                      icon: Images.warning, title: 'are_you_sure_to_confirm'.tr, description: 'you_want_to_confirm_this_order'.tr,
+                      onYesPressed: () {
+                        orderController.updateOrderStatus(widget.orderId, AppConstants.confirmed, back: true);
                       },
-                    )),
+                      onNoPressed: () {
+                        if(cancelPermission!) {
+                          orderController.updateOrderStatus(widget.orderId, AppConstants.canceled, back: true);
+                        }else {
+                          Get.back();
+                        }
+                      },
+                    ), barrierDismissible: false);
+                  }
 
-                  ]),
+                  else if(controllerOrderModel.orderStatus == 'processing') {
+                    Get.find<OrderController>().updateOrderStatus(widget.orderId, AppConstants.handover);
+                  }
+
+                  else if(controllerOrderModel.orderStatus == 'confirmed' || (controllerOrderModel.orderStatus == 'accepted'
+                      && controllerOrderModel.confirmed != null)) {
+                    debugPrint('accepted & confirm call----------------');
+                    Get.dialog(InputDialog(
+                      icon: Images.warning,
+                      title: 'are_you_sure_to_confirm'.tr,
+                      description: 'enter_processing_time_in_minutes'.tr, onPressed: (String? time){
+                      Get.find<OrderController>().updateOrderStatus(controllerOrderModel.id, AppConstants.processing, processingTime: time).then((success) {
+                        Get.back();
+                        if(success) {
+                          Get.find<AuthController>().getProfile();
+                          Get.find<OrderController>().getCurrentOrders();
+                        }
+                      });
+                    },
+                    ));
+                  }
+
+                  else if((controllerOrderModel.orderStatus == 'handover' && (controllerOrderModel.orderType == 'take_away' || selfDelivery))) {
+                    if (Get.find<SplashController>().configModel!.orderDeliveryVerification! || controllerOrderModel.paymentMethod == 'cash_on_delivery') {
+                      orderController.changeDeliveryImageStatus();
+                      print('=====jjj : ${Get.find<SplashController>().configModel!.dmPictureUploadStatus!}');
+                      if(Get.find<SplashController>().configModel!.dmPictureUploadStatus!) {
+                        Get.dialog(const DialogImage(), barrierDismissible: false);
+                      }
+                    } else {
+                      Get.find<OrderController>().updateOrderStatus(controllerOrderModel.id, AppConstants.delivered);
+                    }
+                  }
+
+                },
+                label: Text(
+                  (controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away' || restConfModel || selfDelivery)) ? 'swipe_to_confirm_order'.tr
+                      : (controllerOrderModel.orderStatus == 'confirmed' || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null))
+                      ? Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'swipe_to_cooking'.tr : 'swipe_to_process'.tr
+                      : (controllerOrderModel.orderStatus == 'processing') ? 'swipe_if_ready_for_handover'.tr
+                      : (controllerOrderModel.orderStatus == 'handover' && (controllerOrderModel.orderType == 'take_away' || selfDelivery)) ? 'swipe_to_deliver_order'.tr : '',
+                  style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).primaryColor),
                 ),
-              if(controllerOrderModel.orderStatus == 'processing')
-                Padding(
-                  padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                  child: Row(children: [
+                dismissThresholds: 0.5, dismissible: false, shimmer: true,
+                width: 1170, height: 60, buttonSize: 50, radius: 10,
+                icon: Center(child: Icon(
+                  Get.find<LocalizationController>().isLtr ? Icons.double_arrow_sharp : Icons.keyboard_arrow_left,
+                  color: Colors.white, size: 20.0,
+                )),
+                isLtr: Get.find<LocalizationController>().isLtr,
+                boxShadow: const BoxShadow(blurRadius: 0),
+                buttonColor: Theme.of(context).primaryColor,
+                backgroundColor: const Color(0xffF4F7FC),
+                baseColor: Theme.of(context).primaryColor,
+              ) : const SizedBox() : const SizedBox(),
 
-                    Expanded(child: TextButton(
-
-                      onPressed: (){
-                        orderController.setOrderCancelReason('');
-                        Get.dialog(CancellationDialogue(orderId: order.id));
-                      },
-                      style: TextButton.styleFrom(
-                        minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                          side: BorderSide(width: 1, color: Theme.of(context).textTheme.bodyLarge!.color!),
-                        ),
-                      ),
-                      child: Text('cancel'.tr, textAlign: TextAlign.center, style: robotoRegular.copyWith(
-                        color: Theme.of(context).textTheme.bodyLarge!.color,
-                        fontSize: Dimensions.fontSizeLarge,
-                      )),
-                    )),
-                    const SizedBox(width: Dimensions.paddingSizeSmall),
-
-                    Expanded(child: CustomButton(
-                      buttonText: 'prepared'.tr, height: 40,
-                      onPressed: () {
-                        Get.dialog(ConfirmationDialog(
-                          icon: Images.warning, title: 'are_you_sure_to_confirm'.tr, description: 'you_want_to_confirm_this_order'.tr,
-                          onYesPressed: () {
-                            orderController.updateOrderStatus(widget.orderId, AppConstants.prepared, back: true);
-                          },
-                        ), barrierDismissible: false);
-                      },
-                    )),
-
-                  ]),
-                ),
-              // if(controllerOrderModel.orderStatus == 'prepared')
-              //   Padding(
-              //     padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-              //     child: Row(children: [
-              //
-              //       Expanded(child: TextButton(
-              //         /*onPressed: () => Get.dialog(ConfirmationDialog(
-              //         icon: Images.warning, title: 'are_you_sure_to_cancel'.tr, description: 'you_want_to_cancel_this_order'.tr,
-              //         onYesPressed: () {
-              //           orderController.updateOrderStatus(widget.orderId, AppConstants.CANCELED, back: true);
-              //         },
-              //       ), barrierDismissible: false),*/
-              //         onPressed: (){
-              //           orderController.setOrderCancelReason('');
-              //           Get.dialog(CancellationDialogue(orderId: order.id));
-              //         },
-              //         style: TextButton.styleFrom(
-              //           minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
-              //           shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-              //             side: BorderSide(width: 1, color: Theme.of(context).textTheme.bodyLarge!.color!),
-              //           ),
-              //         ),
-              //         child: Text('cancel'.tr, textAlign: TextAlign.center, style: robotoRegular.copyWith(
-              //           color: Theme.of(context).textTheme.bodyLarge!.color,
-              //           fontSize: Dimensions.fontSizeLarge,
-              //         )),
-              //       )),
-              //       const SizedBox(width: Dimensions.paddingSizeSmall),
-              //
-              //       Expanded(child: CustomButton(
-              //         buttonText: 'prepared'.tr, height: 40,
-              //         onPressed: () {
-              //           Get.dialog(ConfirmationDialog(
-              //             icon: Images.warning, title: 'are_you_sure_to_confirm'.tr, description: 'you_want_to_confirm_this_order'.tr,
-              //             onYesPressed: () {
-              //               orderController.updateOrderStatus(widget.orderId, AppConstants.pickedUp, back: true);
-              //             },
-              //           ), barrierDismissible: false);
-              //         },
-              //       )),
-              //
-              //     ]),
-              //   ),
-              // if(controllerOrderModel.orderStatus == 'picked_up')
-              //   Padding(
-              //     padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-              //     child: Row(children: [
-              //
-              //       Expanded(child: TextButton(
-              //         /*onPressed: () => Get.dialog(ConfirmationDialog(
-              //         icon: Images.warning, title: 'are_you_sure_to_cancel'.tr, description: 'you_want_to_cancel_this_order'.tr,
-              //         onYesPressed: () {
-              //           orderController.updateOrderStatus(widget.orderId, AppConstants.CANCELED, back: true);
-              //         },
-              //       ), barrierDismissible: false),*/
-              //         onPressed: (){
-              //           orderController.setOrderCancelReason('');
-              //           Get.dialog(CancellationDialogue(orderId: order.id));
-              //         },
-              //         style: TextButton.styleFrom(
-              //           minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
-              //           shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-              //             side: BorderSide(width: 1, color: Theme.of(context).textTheme.bodyLarge!.color!),
-              //           ),
-              //         ),
-              //         child: Text('cancel'.tr, textAlign: TextAlign.center, style: robotoRegular.copyWith(
-              //           color: Theme.of(context).textTheme.bodyLarge!.color,
-              //           fontSize: Dimensions.fontSizeLarge,
-              //         )),
-              //       )),
-              //       const SizedBox(width: Dimensions.paddingSizeSmall),
-              //
-              //       Expanded(child: CustomButton(
-              //         buttonText: 'confirm'.tr, height: 40,
-              //         onPressed: () {
-              //           Get.dialog(ConfirmationDialog(
-              //             icon: Images.warning, title: 'are_you_sure_to_confirm'.tr, description: 'you_want_to_confirm_this_order'.tr,
-              //             onYesPressed: () {
-              //               // orderController.updateOrderStatus(widget.orderId, AppConstants.processing, back: true);
-              //             },
-              //           ), barrierDismissible: false);
-              //         },
-              //       )),
-              //
-              //     ]),
-              //   ),
-              //   Padding(
+              // Padding(
               //   padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
               //   child: CustomButton(
               //     onPressed: () {

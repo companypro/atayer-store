@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/view/base/custom_app_bar.dart';
 import 'package:get/get.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 

@@ -11,8 +11,6 @@ import 'package:sixam_mart_store/view/base/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../controller/order_controller.dart';
-
 class MenuButton extends StatelessWidget {
   final MenuModel menu;
   final bool isProfile;
@@ -33,10 +31,6 @@ class MenuButton extends StatelessWidget {
             if (Get.find<AuthController>().isLoggedIn()) {
               Get.dialog(ConfirmationDialog(icon: Images.support, description: 'are_you_sure_to_logout'.tr, isLogOut: true, onYesPressed: () {
                 Get.find<AuthController>().clearSharedData();
-                Get.find<OrderController>().clearOrders();
-                //
-                // print('List runningOrders${Get.find<OrderController>().runningOrders?.length}');
-                // print('List runningOrderList${Get.find<OrderController>().runningOrderList?.length}');
                 Get.offAllNamed(RouteHelper.getSignInRoute());
               }), useSafeArea: false);
             } else {

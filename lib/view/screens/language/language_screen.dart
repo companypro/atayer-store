@@ -34,7 +34,7 @@ class LanguageScreen extends StatelessWidget {
                     width: 1170,
                     child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-                      // Center(child: Image.asset(Images.logo, width: 200)),
+                      Center(child: Image.asset(Images.logo, width: 200)),
                       // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE))),
                       const SizedBox(height: 30),
@@ -63,9 +63,9 @@ class LanguageScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: Dimensions.paddingSizeLarge),
 
-                      // Text('you_can_change_language'.tr, style: robotoRegular.copyWith(
-                      //   fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor,
-                      // )),
+                      Text('you_can_change_language'.tr, style: robotoRegular.copyWith(
+                        fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor,
+                      )),
 
                     ]),
                   )),

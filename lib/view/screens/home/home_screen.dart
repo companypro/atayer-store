@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).cardColor,
         leading: Padding(
           padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-          child: Image.asset(Images.logo, height: 35, width: 35,color: Theme.of(context).primaryColor,),
+          child: Image.asset(Images.logo, height: 30, width: 30),
         ),
         titleSpacing: 0, elevation: 0,
         title: Text(AppConstants.appName, maxLines: 1, overflow: TextOverflow.ellipsis, style: robotoMedium.copyWith(
@@ -159,80 +159,15 @@ class HomeScreen extends StatelessWidget {
             }),
             const SizedBox(height: Dimensions.paddingSizeLarge),
 
-            // GetBuilder<OrderController>(builder: (orderController) {
-            //   List<OrderModel> orderList = [];
-            //   if(orderController.runningOrders != null) {
-            //     orderList = orderController.runningOrders![orderController.orderIndex].orderList!;
-            //   }
-            //
-            //   return Get.find<AuthController>().modulePermission!.order! ? Column(children: [
-            //
-            //     orderController.runningOrders != null ? Container(
-            //       height: 40,
-            //       decoration: BoxDecoration(
-            //         border: Border.all(color: Theme.of(context).disabledColor, width: 1),
-            //         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-            //       ),
-            //       child: ListView.builder(
-            //         scrollDirection: Axis.horizontal,
-            //         itemCount: orderController.runningOrders!.length,
-            //         itemBuilder: (context, index) {
-            //           return OrderButton(
-            //             title: orderController.runningOrders![index].status!.tr, index: index,
-            //             orderController: orderController, fromHistory: false,
-            //           );
-            //         },
-            //       ),
-            //     ) : const SizedBox(),
-            //
-            //     orderController.runningOrders != null ? InkWell(
-            //       onTap: () => orderController.toggleCampaignOnly(),
-            //       child: Row(children: [
-            //         Checkbox(
-            //           activeColor: Theme.of(context).primaryColor,
-            //           value: orderController.campaignOnly,
-            //           onChanged: (isActive) => orderController.toggleCampaignOnly(),
-            //         ),
-            //         Text(
-            //           'campaign_order'.tr,
-            //           style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-            //         ),
-            //       ]),
-            //     ) : const SizedBox(),
-            //
-            //     orderController.runningOrders != null ? orderList.isNotEmpty ? ListView.builder(
-            //       physics: const NeverScrollableScrollPhysics(),
-            //       shrinkWrap: true,
-            //       itemCount: orderList.length,
-            //       itemBuilder: (context, index) {
-            //         return OrderWidgetHome(orderModel: orderList[index], hasDivider: index != orderList.length-1, isRunning: true);
-            //       },
-            //     ) : Padding(
-            //       padding: const EdgeInsets.only(top: 50),
-            //       child: Center(child: Text('no_order_found'.tr)),
-            //     ) : ListView.builder(
-            //       physics: const NeverScrollableScrollPhysics(),
-            //       shrinkWrap: true,
-            //       itemCount: 10,
-            //       itemBuilder: (context, index) {
-            //         return OrderShimmer(isEnabled: orderController.runningOrders == null);
-            //       },
-            //     ),
-            //
-            //   ]) : Center(child: Padding(
-            //     padding: const EdgeInsets.only(top: 100),
-            //     child: Text('you_have_no_permission_to_access_this_feature'.tr, style: robotoMedium),
-            //   ));
-            // }),
             GetBuilder<OrderController>(builder: (orderController) {
               List<OrderModel> orderList = [];
-              if(orderController.runningOrders != null && orderController.runningOrders!.isNotEmpty) {
-                orderList = orderController.runningOrders![orderController.orderIndex].orderList ?? [];
+              if(orderController.runningOrders != null) {
+                orderList = orderController.runningOrders![orderController.orderIndex].orderList!;
               }
 
               return Get.find<AuthController>().modulePermission!.order! ? Column(children: [
 
-                orderController.runningOrders != null && orderController.runningOrders!.isNotEmpty ? Container(
+                orderController.runningOrders != null ? Container(
                   height: 40,
                   decoration: BoxDecoration(
                     border: Border.all(color: Theme.of(context).disabledColor, width: 1),
@@ -250,7 +185,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ) : const SizedBox(),
 
-                orderController.runningOrders != null && orderController.runningOrders!.isNotEmpty ? InkWell(
+                orderController.runningOrders != null ? InkWell(
                   onTap: () => orderController.toggleCampaignOnly(),
                   child: Row(children: [
                     Checkbox(
@@ -265,12 +200,12 @@ class HomeScreen extends StatelessWidget {
                   ]),
                 ) : const SizedBox(),
 
-                orderController.runningOrders != null && orderController.runningOrders!.isNotEmpty ? orderList.isNotEmpty ? ListView.builder(
+                orderController.runningOrders != null ? orderList.isNotEmpty ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: orderList.length,
                   itemBuilder: (context, index) {
-                    return OrderWidgetHome(orderModel: orderList[index], hasDivider: index != orderList.length-1, isRunning: true);
+                    return OrderWidget(orderModel: orderList[index], hasDivider: index != orderList.length-1, isRunning: true);
                   },
                 ) : Padding(
                   padding: const EdgeInsets.only(top: 50),

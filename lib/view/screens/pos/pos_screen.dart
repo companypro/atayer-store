@@ -87,7 +87,6 @@ class _PosScreenState extends State<PosScreen> {
               ]),
             );
           },
-
           onSuggestionSelected: (Item suggestion) {
             _searchController.text = '';
             Get.bottomSheet(ItemBottomSheet(item: suggestion));

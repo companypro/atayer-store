@@ -13,16 +13,16 @@ class OrderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int selectedIndex;
-    // int length = 0;
+    int length = 0;
     int titleLength = 0;
     if(fromHistory) {
       selectedIndex = orderController.historyIndex;
-      // titleLength = orderController.statusList.length;
-      // length = 0;
+      titleLength = orderController.statusList.length;
+      length = 0;
     }else {
       selectedIndex = orderController.orderIndex;
       titleLength = orderController.runningOrders!.length;
-      // length = orderController.runningOrders![index].orderList!.length;
+      length = orderController.runningOrders![index].orderList!.length;
     }
     bool isSelected = selectedIndex == index;
     return InkWell(
@@ -37,7 +37,7 @@ class OrderButton extends StatelessWidget {
           ),
           alignment: Alignment.center,
           child: Text(
-            '$title',
+            '$title${fromHistory ? '' : ' ($length)'}',
             maxLines: 1, overflow: TextOverflow.ellipsis,
             style: robotoMedium.copyWith(
               fontSize: Dimensions.fontSizeExtraSmall,

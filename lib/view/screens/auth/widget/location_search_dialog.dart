@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geolocator/geolocator.dart';
@@ -61,10 +60,10 @@ class LocationSearchDialog extends StatelessWidget {
               ]),
             );
           },
- onSuggestionSelected: (PredictionModel suggestion) async{
-          Position position = await Get.find<AuthController>().setSuggestedLocation(suggestion.placeId, suggestion.description, mapController);
-          Get.back(result: position);
-        },
+          onSuggestionSelected: (PredictionModel suggestion) async {
+            Position position = await Get.find<AuthController>().setSuggestedLocation(suggestion.placeId, suggestion.description, mapController);
+            Get.back(result: position);
+          },
         )),
       ),
     ));

@@ -65,9 +65,9 @@ class PaymentScreenState extends State<PaymentScreen> {
       ),
       onRefresh: () async {
         if (Platform.isAndroid) {
-          browser.webViewController!.reload();
+          browser.webViewController.reload();
         } else if (Platform.isIOS) {
-          browser.webViewController!.loadUrl(urlRequest: URLRequest(url: await browser.webViewController!.getUrl()));
+          browser.webViewController.loadUrl(urlRequest: URLRequest(url: await browser.webViewController.getUrl()));
         }
       },
     );

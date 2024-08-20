@@ -5,7 +5,7 @@ class AppConstants {
   static const String appName = 'Atayer Store';
   static const double appVersion = 2.5;
 
-  static const String baseUrl = 'https://lest.lisre.online';
+  static const String baseUrl = 'https://atayr.stoor.online';
 
   static const String configUri = '/api/v1/config';
   static const String loginUri = '/api/v1/auth/vendor/login';
@@ -138,6 +138,7 @@ class AppConstants {
   static const String canceled = 'canceled';
   static const String failed = 'failed';
   static const String refunded = 'refunded';
+  static const String confirmed = 'confirmed';
 
   ///user type
   static const String customer = 'customer';

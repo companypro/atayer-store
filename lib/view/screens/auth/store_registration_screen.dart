@@ -238,7 +238,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> {
                           }
                       ),
 
-                      authController.zoneList != null && authController.position != null ? const SelectLocationAndModuleView(fromView: true) : const Center(child: CircularProgressIndicator()),
+                      authController.zoneList != null ? const SelectLocationAndModuleView(fromView: true) : const Center(child: CircularProgressIndicator()),
                       const SizedBox(height: Dimensions.paddingSizeLarge),
 
                       ListView.builder(
