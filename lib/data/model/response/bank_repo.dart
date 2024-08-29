@@ -21,13 +21,13 @@ class BankRepo {
     return await apiClient.postData(AppConstants.withdrawRequestUri, data);
   }
 
-  Future<Response> getWithdrawMethodList() async {
-    return await apiClient.getData(AppConstants.withdrawRequestMethodUri);
-  }
+  // Future<Response> getWithdrawMethodList() async {
+  //   return await apiClient.getData(AppConstants.withdrawRequestMethodUri);
+  // }
 
-  Future<Response> getWalletPaymentList() async {
-    return await apiClient.getData(AppConstants.walletPaymentListUri);
-  }
+  // Future<Response> getWalletPaymentList() async {
+  //   return await apiClient.getData(AppConstants.walletPaymentListUri);
+  // }
 
   Future<Response> makeWalletAdjustment() async {
     return await apiClient.postData(AppConstants.makeWalletAdjustmentUri, {'token': Get.find<AuthController>().getUserToken()});

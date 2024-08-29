@@ -28,7 +28,7 @@ class _WithdrawMethodScreenState extends State<WithdrawMethodScreen> {
 
   void initCall() async{
 
-    Get.find<BankController>().getWithdrawMethodList();
+    // Get.find<BankController>().getWithdrawMethodList();
     Get.find<DisbursementController>().enableDisbursementWarningMessage(false, canShowDialog: !widget.isFromDashboard);
   }
 

@@ -93,8 +93,8 @@ class AppConstants {
   static const String makeDefaultDisbursementMethodUri = '/api/v1/vendor/withdraw-method/make-default';
   static const String deleteDisbursementMethodUri = '/api/v1/vendor/withdraw-method/delete';
   static const String getDisbursementReportUri = '/api/v1/vendor/get-disbursement-report';
-  static const String withdrawRequestMethodUri = '/api/v1/vendor/get-withdraw-method-list';
-  static const String walletPaymentListUri = '/api/v1/vendor/wallet-payment-list';
+  // static const String withdrawRequestMethodUri = '/api/v1/vendor/get-withdraw-method-list';
+  // static const String walletPaymentListUri = '/api/v1/vendor/wallet-payment-list';
   static const String makeWalletAdjustmentUri = '/api/v1/vendor/make-wallet-adjustment';
   static const String makeCollectedCashPaymentUri = '/api/v1/vendor/make-collected-cash-payment';
 

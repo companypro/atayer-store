@@ -23,20 +23,20 @@ class MenuScreen extends StatelessWidget {
         isBlocked: !Get.find<AuthController>().profileModel!.stores![0].itemSection!,
       ));
     }
-    if(Get.find<AuthController>().modulePermission!.item!) {
-      menuList.add(MenuModel(
-        icon: Images.pendingItemIcon, title: 'pending_item'.tr, route: RouteHelper.getPendingItemRoute(),
-      ));
-    }
+    // if(Get.find<AuthController>().modulePermission!.item!) {
+    //   menuList.add(MenuModel(
+    //     icon: Images.pendingItemIcon, title: 'pending_item'.tr, route: RouteHelper.getPendingItemRoute(),
+    //   ));
+    // }
     if(Get.find<AuthController>().modulePermission!.item!) {
       menuList.add(MenuModel(icon: Images.categories, title: 'categories'.tr, route: RouteHelper.getCategoriesRoute()));
     }
     // if(Get.find<AuthController>().modulePermission!.bankInfo!) {
     //   menuList.add(MenuModel(icon: Images.creditCard, title: 'bank_info'.tr, route: RouteHelper.getBankInfoRoute()));
     // }
-    if(Get.find<AuthController>().modulePermission!.campaign!) {
-      menuList.add(MenuModel(icon: Images.bannerIcon, title: 'banner'.tr, route: RouteHelper.getBannerListRoute()));
-    }
+    // if(Get.find<AuthController>().modulePermission!.campaign!) {
+    //   menuList.add(MenuModel(icon: Images.bannerIcon, title: 'banner'.tr, route: RouteHelper.getBannerListRoute()));
+    // }
     if(Get.find<AuthController>().modulePermission!.campaign!) {
       menuList.add(MenuModel(icon: Images.campaign, title: 'campaign'.tr, route: RouteHelper.getCampaignRoute()));
     }

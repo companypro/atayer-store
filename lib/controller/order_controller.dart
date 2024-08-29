@@ -27,7 +27,7 @@ class OrderController extends GetxController implements GetxService {
   bool _campaignOnly = false;
   String _otp = '';
   int _historyIndex = 0;
-  final List<String> _statusList = ['all', 'delivered', 'canceled'];
+  final List<String> _statusList = ['all', 'delivered', 'refunded'];
   bool _paginate = false;
   int? _pageSize;
   List<int> _offsetList = [];
@@ -407,9 +407,9 @@ class OrderController extends GetxController implements GetxService {
     for (var order in _runningOrderList!) {
       if(order.orderStatus == 'pending') {
         _runningOrders![0].orderList!.add(order);
-      }else if((order.orderStatus == 'processing')){
+      }else if((order.orderStatus == 'confirmed')){
         _runningOrders![1].orderList!.add(order);
-      }else if(order.orderStatus == 'prepared') {
+      }else if(order.orderStatus == 'handover') {
         _runningOrders![2].orderList!.add(order);
       }else if(order.orderStatus == 'picked_up') {
         _runningOrders![3].orderList!.add(order);

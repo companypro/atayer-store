@@ -56,7 +56,7 @@ class DisbursementController extends GetxController implements GetxService {
     _focusList = [];
 
     if(Get.find<BankController>().widthDrawMethods == null) {
-      _widthDrawMethods = await Get.find<BankController>().getWithdrawMethodList();
+      // _widthDrawMethods = await Get.find<BankController>().getWithdrawMethodList();
     } else {
       _widthDrawMethods = Get.find<BankController>().widthDrawMethods;
     }

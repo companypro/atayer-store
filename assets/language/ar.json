@@ -42,7 +42,7 @@
   "cancelled": "معاد",
   "returned": "عاد",
   "failed": "باءت بالفشل",
-  "canceled": "ألغيت",
+  "refunded": "ألغيت",
   "scheduled": "المقرر",
   "delivered_at": "سلمت في",
   "payment_info": "معلومات الدفع",

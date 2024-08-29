@@ -122,15 +122,15 @@ class ProfileModel {
         translations!.add(Translation.fromJson(v));
       });
     }
-    withdrawAbleBalance = json['withdraw_able_balance'].toDouble();
-    payableBalance = json['Payable_Balance'].toDouble();
+    withdrawAbleBalance = json['withdraw_able_balance'];
+    payableBalance = json['Payable_Balance'];
     adjustable = json['adjust_able'];
     overFlowWarning = json['over_flow_warning'];
     overFlowBlockWarning = json['over_flow_block_warning'];
-    pendingWithdraw = json['pending_withdraw']?.toDouble();
-    alreadyWithdrawn = json['total_withdrawn']?.toDouble();
+    pendingWithdraw = json['pending_withdraw'];
+    alreadyWithdrawn = json['total_withdrawn'];
     dynamicBalanceType = json['dynamic_balance_type'];
-    dynamicBalance = json['dynamic_balance']?.toDouble();
+    dynamicBalance = json['dynamic_balance'];
     showPayNowButton = json['show_pay_now_button'];
   }
 

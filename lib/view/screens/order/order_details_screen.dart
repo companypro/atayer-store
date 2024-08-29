@@ -157,10 +157,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                 dmTips = order.dmTips;
                 isPrescriptionOrder = order.prescriptionOrder;
               }
-              discount = order.storeDiscountAmount! + order.flashAdminDiscountAmount! + order.flashStoreDiscountAmount!;
+              discount = order.storeDiscountAmount! + (order.flashAdminDiscountAmount ?? 0) + (order.flashStoreDiscountAmount ?? 0);
               tax = order.totalTaxAmount;
               taxIncluded = order.taxStatus;
-              additionalCharge = order.additionalCharge!;
+              additionalCharge = order.additionalCharge ?? 0;
               couponDiscount = order.couponDiscountAmount;
               if(isPrescriptionOrder!){
                 double orderAmount = order.orderAmount ?? 0;

@@ -100,7 +100,7 @@ class _SelectLocationAndModuleViewState extends State<SelectLocationAndModuleVie
             ]),
             const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
-            mapView(authController),
+            position != null ? mapView(authController) : const Center(child: CircularProgressIndicator()),
             SizedBox(height: !widget.fromView ? Dimensions.paddingSizeSmall : 0),
 
             !widget.fromView ? CustomButton(

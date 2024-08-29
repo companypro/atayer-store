@@ -29,8 +29,8 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   void initState() {
     Get.find<BankController>().getWithdrawList();
-    Get.find<BankController>().getWithdrawMethodList();
-    Get.find<BankController>().getWalletPaymentList();
+    // Get.find<BankController>().getWithdrawMethodList();
+    // Get.find<BankController>().getWalletPaymentList();
     super.initState();
   }
 
@@ -72,12 +72,12 @@ class _WalletScreenState extends State<WalletScreen> {
                           const SizedBox(width: Dimensions.paddingSizeLarge),
 
                           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text(authController.profileModel!.dynamicBalanceType!, style: robotoRegular.copyWith(
+                            Text(authController.profileModel!.dynamicBalanceType ?? '', style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).cardColor,
                             )),
                             const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
-                            Text(PriceConverter.convertPrice(authController.profileModel!.dynamicBalance!),
+                            Text(PriceConverter.convertPrice(authController.profileModel!.dynamicBalance ?? 0),
                                 style: robotoBold.copyWith(
                               fontSize: 22, color: Theme.of(context).cardColor,
                             ), textDirection: TextDirection.ltr,),
@@ -85,69 +85,69 @@ class _WalletScreenState extends State<WalletScreen> {
 
                           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
 
-                            authController.profileModel!.adjustable! ? InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return GetBuilder<BankController>(builder: (controller) {
-                                        return AlertDialog(
-                                          title: Center(child: Text('cash_adjustment'.tr)),
-                                          content: Text('cash_adjustment_description'.tr, textAlign: TextAlign.center),
-                                          actions: [
-
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Row(children: [
-
-                                                Expanded(
-                                                  child: CustomButton(
-                                                    onPressed: () => Get.back(),
-                                                    color: Theme.of(context).disabledColor.withOpacity(0.5),
-                                                    buttonText: 'cancel'.tr,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: Dimensions.paddingSizeExtraLarge),
-
-                                                Expanded(
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      bankController.makeWalletAdjustment();
-                                                    },
-                                                    child: Container(
-                                                      height: 45,
-                                                      alignment: Alignment.center,
-                                                      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                                        color: Theme.of(context).primaryColor,
-                                                      ),
-                                                      child: !controller.adjustmentLoading ? Text('ok'.tr, style: robotoBold.copyWith(color: Theme.of(context).cardColor, fontSize: Dimensions.fontSizeLarge),)
-                                                          : const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white)),
-                                                    ),
-                                                  ),
-                                                ),
-
-                                              ]),
-                                            ),
-
-                                          ],
-                                        );
-                                      });
-                                    }
-                                );
-                              },
-                              child: Container(
-                                width: 115,
-                                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                  color: Theme.of(context).cardColor,
-                                ),
-                                child: Text('adjust_payments'.tr, textAlign: TextAlign.center, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
-                              ),
-                            ) : const SizedBox(),
-                            SizedBox(height: authController.profileModel!.adjustable! ? Dimensions.paddingSizeLarge : 0),
+                            // authController.profileModel!.adjustable   ? InkWell(
+                            //   onTap: () {
+                            //     showDialog(
+                            //         context: context,
+                            //         builder: (BuildContext context) {
+                            //           return GetBuilder<BankController>(builder: (controller) {
+                            //             return AlertDialog(
+                            //               title: Center(child: Text('cash_adjustment'.tr)),
+                            //               content: Text('cash_adjustment_description'.tr, textAlign: TextAlign.center),
+                            //               actions: [
+                            //
+                            //                 Padding(
+                            //                   padding: const EdgeInsets.all(8.0),
+                            //                   child: Row(children: [
+                            //
+                            //                     Expanded(
+                            //                       child: CustomButton(
+                            //                         onPressed: () => Get.back(),
+                            //                         color: Theme.of(context).disabledColor.withOpacity(0.5),
+                            //                         buttonText: 'cancel'.tr,
+                            //                       ),
+                            //                     ),
+                            //                     const SizedBox(width: Dimensions.paddingSizeExtraLarge),
+                            //
+                            //                     Expanded(
+                            //                       child: InkWell(
+                            //                         onTap: () {
+                            //                           bankController.makeWalletAdjustment();
+                            //                         },
+                            //                         child: Container(
+                            //                           height: 45,
+                            //                           alignment: Alignment.center,
+                            //                           padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                            //                           decoration: BoxDecoration(
+                            //                             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                            //                             color: Theme.of(context).primaryColor,
+                            //                           ),
+                            //                           child: !controller.adjustmentLoading ? Text('ok'.tr, style: robotoBold.copyWith(color: Theme.of(context).cardColor, fontSize: Dimensions.fontSizeLarge),)
+                            //                               : const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white)),
+                            //                         ),
+                            //                       ),
+                            //                     ),
+                            //
+                            //                   ]),
+                            //                 ),
+                            //
+                            //               ],
+                            //             );
+                            //           });
+                            //         }
+                            //     );
+                            //   },
+                            //   child: Container(
+                            //     width: 115,
+                            //     padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                            //     decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                            //       color: Theme.of(context).cardColor,
+                            //     ),
+                            //     child: Text('adjust_payments'.tr, textAlign: TextAlign.center, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
+                            //   ),
+                            // ) : const SizedBox(),
+                            SizedBox(height:  Dimensions.paddingSizeLarge ),
 
                             (authController.profileModel!.balance! > 0 && authController.profileModel!.balance! > authController.profileModel!.cashInHands! && Get.find<SplashController>().configModel!.disbursementType == 'manual') ? InkWell(
                               onTap: () {
@@ -213,13 +213,13 @@ class _WalletScreenState extends State<WalletScreen> {
                       ]),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                      WalletWidget(title: 'pending_withdraw'.tr, value: authController.profileModel!.pendingWithdraw, isAmountAndTextInRow: true),
+                      // WalletWidget(title: 'pending_withdraw'.tr, value: authController.profileModel!.pendingWithdraw, isAmountAndTextInRow: true),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                      WalletWidget(title: 'already_withdrawn'.tr, value: authController.profileModel!.alreadyWithdrawn, isAmountAndTextInRow: true),
+                      // WalletWidget(title: 'already_withdrawn'.tr, value: authController.profileModel!.alreadyWithdrawn, isAmountAndTextInRow: true),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                      WalletWidget(title: 'total_earning'.tr, value: authController.profileModel!.totalEarning , isAmountAndTextInRow: true),
+                      // WalletWidget(title: 'total_earning'.tr, value: authController.profileModel!.totalEarning , isAmountAndTextInRow: true),
 
                       Padding(
                         padding: const EdgeInsets.only(top: Dimensions.paddingSizeExtraLarge),
@@ -252,30 +252,30 @@ class _WalletScreenState extends State<WalletScreen> {
                           ),
                           const SizedBox(width: Dimensions.paddingSizeSmall),
 
-                          InkWell(
-                            onTap: () {
-                              if(bankController.selectedIndex != 1) {
-                                bankController.setIndex(1);
-                              }
-                            },
-                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-                              Text('payment_history'.tr, style: robotoMedium.copyWith(
-                                color: bankController.selectedIndex == 1 ? Colors.blue : Theme.of(context).disabledColor,
-                              )),
-                              const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                              Container(
-                                height: 3, width: 120,
-                                margin: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                  color: bankController.selectedIndex == 1 ? Colors.blue : null,
-                                ),
-                              ),
-
-                            ]),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     if(bankController.selectedIndex != 1) {
+                          //       bankController.setIndex(1);
+                          //     }
+                          //   },
+                          //   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          //
+                          //     Text('payment_history'.tr, style: robotoMedium.copyWith(
+                          //       color: bankController.selectedIndex == 1 ? Colors.blue : Theme.of(context).disabledColor,
+                          //     )),
+                          //     const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                          //
+                          //     Container(
+                          //       height: 3, width: 120,
+                          //       margin: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
+                          //       decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                          //         color: bankController.selectedIndex == 1 ? Colors.blue : null,
+                          //       ),
+                          //     ),
+                          //
+                          //   ]),
+                          // ),
                         ]),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -289,9 +289,9 @@ class _WalletScreenState extends State<WalletScreen> {
                             if(bankController.selectedIndex == 0) {
                               Get.toNamed(RouteHelper.getWithdrawHistoryRoute());
                             }
-                            if(bankController.selectedIndex == 1) {
-                              Get.toNamed(RouteHelper.getPaymentHistoryRoute());
-                            }
+                            // if(bankController.selectedIndex == 1) {
+                            //   Get.toNamed(RouteHelper.getPaymentHistoryRoute());
+                            // }
 
                           },
                           child: Padding(
@@ -358,9 +358,8 @@ class _WalletScreenState extends State<WalletScreen> {
                   ),
                 ),
 
-                (authController.profileModel!.overFlowWarning! || authController.profileModel!.overFlowBlockWarning!)
-                    ? WalletAttentionAlert(isOverFlowBlockWarning: authController.profileModel!.overFlowBlockWarning!)
-                    : const SizedBox(),
+                 // WalletAttentionAlert(isOverFlowBlockWarning: authController.profileModel!.overFlowBlockWarning ?? false)
+                 //   ,
               ],
             ),
           )

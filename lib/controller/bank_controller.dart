@@ -142,38 +142,38 @@ class BankController extends GetxController implements GetxService {
     update();
   }
 
-  Future<List<WidthDrawMethodModel>?> getWithdrawMethodList() async {
-    Response response = await bankRepo.getWithdrawMethodList();
-    if(response.statusCode == 200) {
-      _widthDrawMethods = [];
-      response.body.forEach((method) {
-        WidthDrawMethodModel withdrawMethod = WidthDrawMethodModel.fromJson(method);
-        _widthDrawMethods!.add(withdrawMethod);
-      });
-    }else {
-      ApiChecker.checkApi(response);
-    }
-    update();
-    return _widthDrawMethods;
-  }
+  // Future<List<WidthDrawMethodModel>?> getWithdrawMethodList() async {
+  //   Response response = await bankRepo.getWithdrawMethodList();
+  //   if(response.statusCode == 200) {
+  //     _widthDrawMethods = [];
+  //     response.body.forEach((method) {
+  //       WidthDrawMethodModel withdrawMethod = WidthDrawMethodModel.fromJson(method);
+  //       _widthDrawMethods!.add(withdrawMethod);
+  //     });
+  //   }else {
+  //     ApiChecker.checkApi(response);
+  //   }
+  //   update();
+  //   return _widthDrawMethods;
+  // }
 
   void setIndex(int index) {
     _selectedIndex = index;
     update();
   }
 
-  Future<void> getWalletPaymentList() async {
-    _transactions = null;
-    Response response = await bankRepo.getWalletPaymentList();
-    if(response.statusCode == 200) {
-      _transactions = [];
-      WalletPaymentModel walletPaymentModel = WalletPaymentModel.fromJson(response.body);
-      _transactions!.addAll(walletPaymentModel.transactions!);
-    }else {
-      ApiChecker.checkApi(response);
-    }
-    update();
-  }
+  // Future<void> getWalletPaymentList() async {
+  //   _transactions = null;
+  //   Response response = await bankRepo.getWalletPaymentList();
+  //   if(response.statusCode == 200) {
+  //     _transactions = [];
+  //     WalletPaymentModel walletPaymentModel = WalletPaymentModel.fromJson(response.body);
+  //     _transactions!.addAll(walletPaymentModel.transactions!);
+  //   }else {
+  //     ApiChecker.checkApi(response);
+  //   }
+  //   update();
+  // }
 
   Future<void> makeWalletAdjustment() async {
     _adjustmentLoading = true;

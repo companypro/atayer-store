@@ -17,7 +17,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
 
   @override
   void initState() {
-    Get.find<BankController>().getWalletPaymentList();
+    // Get.find<BankController>().getWalletPaymentList();
     super.initState();
   }
 
