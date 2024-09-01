@@ -831,18 +831,27 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                 ]),
               ) : SliderButton(
                 action: () {
-
-                  if(controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away'
-                      || restConfModel || selfDelivery))  {
+                  if(controllerOrderModel.orderStatus == 'pending' &&
+                      (controllerOrderModel.orderType == 'take_away' || restConfModel || selfDelivery))  {
                     Get.dialog(ConfirmationDialog(
-                      icon: Images.warning, title: 'are_you_sure_to_confirm'.tr, description: 'you_want_to_confirm_this_order'.tr,
+                      icon: Images.warning,
+                      title: 'are_you_sure_to_confirm'.tr,
+                      description: 'you_want_to_confirm_this_order'.tr,
                       onYesPressed: () {
-                        orderController.updateOrderStatus(widget.orderId, AppConstants.confirmed, back: true);
+                        orderController.updateOrderStatus(widget.orderId, AppConstants.confirmed, back: true).then((success) {
+                          if(success) {
+                            Get.back();
+                          }
+                        });
                       },
                       onNoPressed: () {
                         if(cancelPermission!) {
-                          orderController.updateOrderStatus(widget.orderId, AppConstants.canceled, back: true);
-                        }else {
+                          orderController.updateOrderStatus(widget.orderId, AppConstants.canceled, back: true).then((success) {
+                            if(success) {
+                              Get.back();
+                            }
+                          });
+                        } else {
                           Get.back();
                         }
                       },
@@ -850,46 +859,66 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                   }
 
                   else if(controllerOrderModel.orderStatus == 'processing') {
-                    Get.find<OrderController>().updateOrderStatus(widget.orderId, AppConstants.handover);
+                    Get.find<OrderController>().updateOrderStatus(widget.orderId, AppConstants.handover).then((success) {
+                      if(success) {
+                        Get.back();
+                      }
+                    });
                   }
 
-                  else if(controllerOrderModel.orderStatus == 'confirmed' || (controllerOrderModel.orderStatus == 'accepted'
-                      && controllerOrderModel.confirmed != null)) {
-                    debugPrint('accepted & confirm call----------------');
+                  else if(controllerOrderModel.orderStatus == 'confirmed' ||
+                      (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null)) {
                     Get.dialog(InputDialog(
                       icon: Images.warning,
                       title: 'are_you_sure_to_confirm'.tr,
-                      description: 'enter_processing_time_in_minutes'.tr, onPressed: (String? time){
-                      Get.find<OrderController>().updateOrderStatus(controllerOrderModel.id, AppConstants.processing, processingTime: time).then((success) {
-                        Get.back();
-                        if(success) {
-                          Get.find<AuthController>().getProfile();
-                          Get.find<OrderController>().getCurrentOrders();
-                        }
-                      });
-                    },
+                      description: 'enter_processing_time_in_minutes'.tr,
+                      onPressed: (String? time) {
+                        Get.find<OrderController>()
+                            .updateOrderStatus(controllerOrderModel.id, AppConstants.processing, processingTime: time)
+                            .then((success) {
+                          if (success) {
+                            Navigator.pop(context);
+                            debugPrint('Dialog closed');
+                            Get.find<AuthController>().getProfile();
+                            Get.find<OrderController>().getCurrentOrders();
+                          }
+                        });
+                      },
                     ));
                   }
 
-                  else if((controllerOrderModel.orderStatus == 'handover' && (controllerOrderModel.orderType == 'take_away' || selfDelivery))) {
-                    if (Get.find<SplashController>().configModel!.orderDeliveryVerification! || controllerOrderModel.paymentMethod == 'cash_on_delivery') {
+                  else if((controllerOrderModel.orderStatus == 'handover' &&
+                      (controllerOrderModel.orderType == 'take_away' || selfDelivery))) {
+                    if (Get.find<SplashController>().configModel!.orderDeliveryVerification! ||
+                        controllerOrderModel.paymentMethod == 'cash_on_delivery') {
                       orderController.changeDeliveryImageStatus();
-                      print('=====jjj : ${Get.find<SplashController>().configModel!.dmPictureUploadStatus!}');
                       if(Get.find<SplashController>().configModel!.dmPictureUploadStatus!) {
-                        Get.dialog(const DialogImage(), barrierDismissible: false);
+                        Get.dialog(const DialogImage(), barrierDismissible: false).then((_) {
+                          Get.back();
+                        });
                       }
                     } else {
-                      Get.find<OrderController>().updateOrderStatus(controllerOrderModel.id, AppConstants.delivered);
+                      Get.find<OrderController>().updateOrderStatus(controllerOrderModel.id, AppConstants.delivered).then((success) {
+                        if (success) {
+                          Get.back();
+                        }
+                      });
                     }
                   }
-
                 },
                 label: Text(
-                  (controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away' || restConfModel || selfDelivery)) ? 'swipe_to_confirm_order'.tr
-                      : (controllerOrderModel.orderStatus == 'confirmed' || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null))
-                      ? Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'swipe_to_cooking'.tr : 'swipe_to_process'.tr
+                  (controllerOrderModel.orderStatus == 'pending' &&
+                      (controllerOrderModel.orderType == 'take_away' || restConfModel || selfDelivery)) ? 'swipe_to_confirm_order'.tr
+                      : (controllerOrderModel.orderStatus == 'confirmed' ||
+                      (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null))
+                      ? Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText!
+                      ? 'swipe_to_cooking'.tr
+                      : 'swipe_to_process'.tr
                       : (controllerOrderModel.orderStatus == 'processing') ? 'swipe_if_ready_for_handover'.tr
-                      : (controllerOrderModel.orderStatus == 'handover' && (controllerOrderModel.orderType == 'take_away' || selfDelivery)) ? 'swipe_to_deliver_order'.tr : '',
+                      : (controllerOrderModel.orderStatus == 'handover' &&
+                      (controllerOrderModel.orderType == 'take_away' || selfDelivery))
+                      ? 'swipe_to_deliver_order'.tr
+                      : '',
                   style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).primaryColor),
                 ),
                 dismissThresholds: 0.5, dismissible: false, shimmer: true,
@@ -903,7 +932,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                 buttonColor: Theme.of(context).primaryColor,
                 backgroundColor: const Color(0xffF4F7FC),
                 baseColor: Theme.of(context).primaryColor,
-              ) : const SizedBox() : const SizedBox(),
+              )
+                  : const SizedBox() : const SizedBox(),
 
               // Padding(
               //   padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),

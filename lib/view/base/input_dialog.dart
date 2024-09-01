@@ -68,8 +68,9 @@ class _InputDialogState extends State<InputDialog> {
                   onPressed: () {
                     if(_textEditingController.text.trim().isEmpty) {
                       showCustomSnackBar('please_provide_processing_time'.tr);
-                    }else {
+                    } else {
                       widget.onPressed(_textEditingController.text.trim());
+
                     }
                   },
                   height: 40,
